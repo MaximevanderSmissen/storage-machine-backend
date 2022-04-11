@@ -18,4 +18,9 @@ let stockPersistence = { new IStockDataAccess with
         )
         |> Set.toList
 
+    member this.StoreBin bin =
+        match SimulatedDatabase.storeBin bin with
+            | Error _ -> Error BinAlreadyStored
+            | Ok () -> Ok ()
+
 }
