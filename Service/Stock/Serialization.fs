@@ -24,7 +24,7 @@ let decoderBinIdentifier : Decoder<BinIdentifier> =
         | Error validationMessage -> Decode.fail validationMessage
     )
 // EXERCISE: Is this decoder in the right place (in the architecture) here?
-    
+
 /// JSON deserialization of a part number.
 let decoderPartNumber : Decoder<PartNumber> =
     Decode.string
@@ -33,6 +33,13 @@ let decoderPartNumber : Decoder<PartNumber> =
         | Ok partNumber -> Decode.succeed partNumber
         | Error validationMessage -> Decode.fail validationMessage
     )
+
+/// JSON deserialization of a bin.
+let decoderBin : Decoder<Bin> =
+    Decode.object (fun get -> {
+        Identifier = get.Required.Field "binIdentifier" decoderBinIdentifier
+        Content = get.Optional.Field "content" decoderPartNumber
+    })
 
 /// JSON serialization of a stock product.
 let encoderProduct : Encoder<Product> = fun product ->

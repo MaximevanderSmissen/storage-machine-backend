@@ -12,7 +12,24 @@ let binOverview (next: HttpFunc) (ctx: HttpContext) =
     task {
         let dataAccess = ctx.GetService<IStockDataAccess> ()
         let bins = Stock.binOverview dataAccess
-        return! ThothSerializer.RespondJsonSeq bins Serialization.encoderBin next ctx 
+        return! ThothSerializer.RespondJsonSeq bins Serialization.encoderBin next ctx
+    }
+
+/// Store a new bin in the Storage Machine.
+let storeBin (next: HttpFunc) (ctx: HttpContext) =
+    task {
+        let dataAccess = ctx.GetService<IStockDataAccess> ()
+        let! binParseResult = (ThothSerializer.ReadBody ctx Serialization.decoderBin)
+        let binStoreResult = Result.bind (Stock.storeBin dataAccess) binParseResult
+
+        return!
+            match binStoreResult with
+            | Ok bin -> ThothSerializer.RespondJson bin Serialization.encoderBin next ctx
+            | Error errorMessage ->
+                RequestErrors.badRequest
+                    (text $"Failed to store bin in Storage Machine due to following error: {errorMessage}")
+                    earlyReturn
+                    ctx
     }
 
 /// An overview of actual stock currently stored in the Storage Machine. Actual stock is defined as all non-empty bins.
@@ -20,7 +37,7 @@ let stockOverview (next: HttpFunc) (ctx: HttpContext) =
     task {
         let dataAccess = ctx.GetService<IStockDataAccess> ()
         let bins = Stock.stockOverview dataAccess
-        return! ThothSerializer.RespondJsonSeq bins Serialization.encoderBin next ctx 
+        return! ThothSerializer.RespondJsonSeq bins Serialization.encoderBin next ctx
     }
 
 /// An overview of all products stored in the Storage Machine, regardless what bins contain them.
@@ -28,7 +45,7 @@ let productsInStock (next: HttpFunc) (ctx: HttpContext) =
     task {
         let dataAccess = ctx.GetService<IStockDataAccess> ()
         let productsOverview = Stock.productsInStock dataAccess
-        return! ThothSerializer.RespondJson productsOverview Serialization.encoderProductsOverview next ctx 
+        return! ThothSerializer.RespondJson productsOverview Serialization.encoderProductsOverview next ctx
     }
 
 /// Defines URLs for functionality of the Stock component and dispatches HTTP requests to those URLs.
@@ -37,4 +54,5 @@ let handlers : HttpHandler =
         GET >=> route "/bins" >=> binOverview
         GET >=> route "/stock" >=> stockOverview
         GET >=> route "/stock/products" >=> productsInStock
+        POST >=> route "/stock" >=> storeBin
     ]

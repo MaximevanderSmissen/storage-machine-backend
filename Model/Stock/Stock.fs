@@ -25,7 +25,4 @@ let allProducts bins : List<Product> =
     |> Seq.toList
 
 /// Total quantity of each of the provided products.
-let totalQuantity products : Map<Product, Quantity> =
-    products
-    |> Seq.countBy id
-    |> Map.ofSeq
+let totalQuantity products : Map<Product, Quantity> = products |> Seq.countBy id |> Map.ofSeq
