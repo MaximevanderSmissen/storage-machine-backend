@@ -4,7 +4,7 @@ module StorageMachine.Common
 open System.Text.RegularExpressions
 
 /// Every bin stored in the Storage Machine is identifier by a unique identifier.
-type BinIdentifier = private | BinIdentifier of string
+type BinIdentifier = private BinIdentifier of string
 
 /// Provides access to raw bin identifier by pattern matching.
 let (|BinIdentifier|) (BinIdentifier binIdentifier) = binIdentifier
@@ -21,7 +21,7 @@ module BinIdentifier =
         |> Result.map BinIdentifier
 
 /// All stock (products, components, etc.) is identified by a part number.
-type PartNumber = private | PartNumber of string
+type PartNumber = private PartNumber of string
 
 /// Provides access to raw part number by pattern matching.
 let (|PartNumber|) (PartNumber partNumber) = partNumber

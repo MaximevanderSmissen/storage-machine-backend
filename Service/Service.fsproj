@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <WarnOn>3390;$(WarnOn)</WarnOn>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <WarnOn>3390;$(WarnOn)</WarnOn>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="PostExample.fs" />
-    <Compile Include="Stock\Serialization.fs" />
-    <Compile Include="Stock\Stock.fs" />
-    <Compile Include="Repacking\Repacking.fs" />
-    <Compile Include="HttpHandlers.fs" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Include="PostExample.fs"/>
+        <Compile Include="Stock\Serialization.fs"/>
+        <Compile Include="Stock\Stock.fs"/>
+        <Compile Include="Repacking\Repacking.fs"/>
+        <Compile Include="HttpHandlers.fs"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Giraffe" Version="6.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Ply" Version="0.3.1" />
-    <PackageReference Include="Thoth.Json.Giraffe" Version="5.0.0" />
-    <PackageReference Update="FSharp.Core" Version="7.0.200" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Giraffe" Version="6.0.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Ply" Version="0.3.1"/>
+        <PackageReference Include="Thoth.Json.Giraffe" Version="5.0.0"/>
+        <PackageReference Update="FSharp.Core" Version="7.0.200"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Application\Application.fsproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Application\Application.fsproj"/>
+    </ItemGroup>
 
 </Project>

@@ -5,10 +5,9 @@ open StorageMachine
 open Common
 
 /// The Storage Machine is specialized in storing plastic bins which can hold a single product. A bin may be empty.
-type Bin = {
-    Identifier : BinIdentifier
-    Content : Option<PartNumber>
-}
+type Bin =
+    { Identifier: BinIdentifier
+      Content: Option<PartNumber> }
 
 /// Indicates whether the given bin is empty.
 let isEmpty bin =

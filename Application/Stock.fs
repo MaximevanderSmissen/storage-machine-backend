@@ -6,34 +6,33 @@ open Bin
 open Stock
 
 /// Defines Errors that can occur
-type StockDataError =
-    | BinAlreadyStored
+type StockDataError = | BinAlreadyStored
 
 /// Defines data access operations for stock functionality.
 type IStockDataAccess =
 
     /// Retrieve all bins currently stored in the Storage Machine.
-    abstract RetrieveAllBins : unit -> List<Bin>
+    abstract RetrieveAllBins: unit -> List<Bin>
     /// Store a new bin in the Storage Machine.
-    abstract StoreBin : Bin -> Result<Bin, StockDataError>
+    abstract StoreBin: Bin -> Result<Bin, StockDataError>
 
 /// An overview of all bins currently stored in the Storage Machine.
-let binOverview (dataAccess : IStockDataAccess) : List<Bin> =
+let binOverview (dataAccess: IStockDataAccess) : List<Bin> =
     // Trivially
-    dataAccess.RetrieveAllBins ()
+    dataAccess.RetrieveAllBins()
 
 /// Result type for storing a new bin in the Storage Machine.
 type StoreBinResult = Result<Bin, string>
 
 /// Store a new bin in the Storage Machine.
-let storeBin (dataAccess : IStockDataAccess) (bin : Bin) : StoreBinResult =
+let storeBin (dataAccess: IStockDataAccess) (bin: Bin) : StoreBinResult =
     dataAccess.StoreBin bin
     |> Result.mapError (fun stockDataError -> $"Couldn't store bin due to the following error: {stockDataError}")
 
 /// An overview of actual stock currently stored in the Storage Machine. Actual stock is defined as all non-empty bins.
-let stockOverview (dataAccess : IStockDataAccess) : List<Bin> =
+let stockOverview (dataAccess: IStockDataAccess) : List<Bin> =
     // Perform I/O
-    let allBins = dataAccess.RetrieveAllBins ()
+    let allBins = dataAccess.RetrieveAllBins()
     // Use the model which provides the definition of a bin being (non-)empty
     let actualStock = allBins |> List.filter Bin.isNotEmpty
     actualStock
@@ -43,9 +42,9 @@ let stockOverview (dataAccess : IStockDataAccess) : List<Bin> =
 type ProductsOverview = Set<Product * Quantity>
 
 /// An overview of all products stored in the Storage Machine, regardless what bins contain them.
-let productsInStock (dataAccess : IStockDataAccess) : ProductsOverview =
+let productsInStock (dataAccess: IStockDataAccess) : ProductsOverview =
     // Perform I/O
-    let allBins = dataAccess.RetrieveAllBins ()
+    let allBins = dataAccess.RetrieveAllBins()
     // Use the model
     let products = Stock.allProducts allBins
     products |> Stock.totalQuantity |> Map.toSeq |> Set.ofSeq

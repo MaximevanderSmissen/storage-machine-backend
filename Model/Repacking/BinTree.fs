@@ -15,5 +15,5 @@ type BinTree =
 /// Determines how many products are contained in all bins of the given bin tree.
 let rec productCount binTree =
     match binTree with
-    | Bin (_, productsOrBins) -> List.sumBy productCount productsOrBins
+    | Bin(_, productsOrBins) -> List.sumBy productCount productsOrBins
     | Product _ -> 1

@@ -40,8 +40,8 @@ let private configureServices (services: IServiceCollection) =
         // Data access implementation of the Repacking component
         .AddSingleton<Repacking.IBinTreeDataAccess>(Repacking.binTreeDataAccess)
         .AddGiraffe()
-        .AddSingleton<Json.ISerializer>(ThothSerializer (skipNullField = false, caseStrategy = CaseStrategy.CamelCase))
-        |> ignore
+        .AddSingleton<Json.ISerializer>(ThothSerializer(skipNullField = false, caseStrategy = CaseStrategy.CamelCase))
+    |> ignore
 
 /// The main entry point of the back-end.
 [<EntryPoint>]
@@ -50,14 +50,12 @@ let main argv =
         Host
             .CreateDefaultBuilder(argv)
             .ConfigureWebHostDefaults(fun webHostBuilder ->
-                webHostBuilder
-                    .ConfigureServices(configureServices)
-                    .Configure(configureApp)
-                |> ignore
-            )
+                webHostBuilder.ConfigureServices(configureServices).Configure(configureApp)
+                |> ignore)
             .UseConsoleLifetime(fun opts -> opts.SuppressStatusMessages <- true)
             .Build()
             .Run()
+
         0
-    with
-    | ex -> 1
+    with ex ->
+        1
