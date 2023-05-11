@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="7.0.200" />
-    <PackageReference Include="Ply" Version="0.3.1" />
   </ItemGroup>
 
   <ItemGroup>
