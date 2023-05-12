@@ -16,8 +16,21 @@ type IBinTreeDataAccess =
 /// outer bin does not exist.
 let viewBinTree (dataAccess: IBinTreeDataAccess) (bin: BinIdentifier) : Option<BinTree> = dataAccess.RetrieveBinTree bin
 
+/// Repackage all products in this bin tree. Result is 'None' if the outer bin does not exist.
+let viewRepackagedBinTree (dataAccess: IBinTreeDataAccess) (bin: BinIdentifier) : Option<BinTree> =
+    let binTree = dataAccess.RetrieveBinTree bin
+    binTree |> Option.map BinTree.repackage
+
 /// Count all products contained in all bins of the identified bin tree. Result is 'None' when there is no bin tree
 /// for the provided identifier.
 let productCount (dataAccess: IBinTreeDataAccess) (bin: BinIdentifier) : Option<int> =
     let binTree = dataAccess.RetrieveBinTree bin
     binTree |> Option.map BinTree.productCount
+
+/// Count all products contained in all bins of the repackaged bin tree. Result is 'None' when there is no bin tree
+/// for the provided identifier.
+let repackagedProductCount (dataAccess: IBinTreeDataAccess) (bin: BinIdentifier) : Option<int> =
+    let binTree = dataAccess.RetrieveBinTree bin
+    binTree
+    |> Option.map BinTree.repackage
+    |> Option.map BinTree.productCount
